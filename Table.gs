@@ -37,7 +37,7 @@ class Result {
 
 function getRecord() {
   const today = new Date();
-  const nth = today.getDate() % 7 === 0 ? today.getDate / 7 : today.getDate() / 7 + 1;
+  const nth = today.getDate() % 7 === 0 ? today.getDate() / 7 : today.getDate() / 7 + 1;
   const day = dayMap[today.getDay()];
   const query = new Query(nth, day);
   return new Result(query, queryData(query));

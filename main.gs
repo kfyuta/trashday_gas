@@ -37,11 +37,15 @@ function gohoubi() {
 function buildMessage(result) {
   let l1 = `今日は第${result.nth}${result.day}です。\n`;
   let other = "";
-  for (let i = 0; i < result.arr.length; i++) {
-    if (i === result.arr.length - 1) {
-      other += `${result.arr[i]}の日です。`;
-    } else {
-      other += `${result.arr[i]}の日です。\n`;
+  if (result.arr.length === 0) {
+    other += "ゴミの日ではありません。"
+  } else {
+    for (let i = 0; i < result.arr.length; i++) {
+      if (i === result.arr.length - 1) {
+        other += `${result.arr[i]}の日です。`;
+      } else {
+        other += `${result.arr[i]}の日です。\n`;
+      }
     }
   }
   return l1.concat(other);
@@ -65,8 +69,8 @@ function pushMessage(messages) {
   UrlFetchApp.fetch("https://api.line.me/v2/bot/message/broadcast", pushMsg);
 }
 /**
- * Send push message from line platform.
- * @param messages: array which has object.
+ * Send push image from line platform.
+ * @param fileId: fileId in Google Drive
  * @return void
  */
 function pushPicture(fileId) {
