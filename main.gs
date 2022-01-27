@@ -24,9 +24,29 @@ function gohoubi() {
     list.push(file.getId());
   }
   const [min, max] = [0, list.length - 1];
-  console.log(min, max);
-  const rand = Math.trunc(Math.random() * (max - min) + min);
-  pushPicture(list[rand]);
+
+  const pictures = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("pictures");
+  let r = pictures.getLastRow();
+  let c = pictures.getLastColumn();
+  const data = pictures.getRange(2, 1, r, c).getValues();
+  let ids = data.map(d => d[1]);
+
+  // すべての画像を送信済みの場合、セルをクリア
+  if (ids.length >= max) {
+    pictures.getRange(2, 1, max, c).deleteCells(SpreadsheetApp.Dimension.COLUMNS);
+    r = 1;
+    c = 2;
+  }
+  // 送信済みの画像は1週するまで再送信しない。
+  while (true) {
+    const rand = Math.floor(Math.random() * (max + 1)); 
+    if (!ids.includes(rand)) {
+      pictures.getRange(r + 1, 2).setValue(rand);
+      pictures.getRange(r + 1, 1).setValue(new Date());
+      break;
+    }
+    pushPicture(list[rand]);
+  }
 }
 
 /**
