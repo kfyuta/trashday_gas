@@ -1,6 +1,6 @@
 /**
- * 今日が何ゴミの日か送信する。
- * トリガーで定期実行する
+ * remind trash day
+ * reguraly execute by Trigger
  */
 function remind() {
   const result = getRecord();
@@ -14,7 +14,7 @@ function remind() {
 }
 
 /**
- * GoogleDriveのフォルダから画像を送信する
+ * send a picture from Google Drive
  */
 function gohoubi() {
   const files = DriveApp.getFolderById(YURUUSAGI_FOLDER_ID).getFiles();
@@ -31,13 +31,13 @@ function gohoubi() {
   const data = pictures.getRange(2, 1, r, c).getValues();
   let ids = data.map(d => d[1]);
 
-  // すべての画像を送信済みの場合、セルをクリア
+  // if all pictures are sended, reser send log.
   if (ids.length >= max) {
     pictures.getRange(2, 1, max, c).deleteCells(SpreadsheetApp.Dimension.COLUMNS);
     r = 1;
     c = 2;
   }
-  // 送信済みの画像は1週するまで再送信しない。
+  // not send same picture
   while (true) {
     const rand = Math.floor(Math.random() * (max + 1)); 
     if (!ids.includes(rand)) {
@@ -50,9 +50,9 @@ function gohoubi() {
 }
 
 /**
- * Result型からメッセージを生成する。
- * @param result 検索結果
- * @return 今日の曜日と出せるゴミの文字列
+ * create messge from Result type
+ * @param result
+ * @return day and throwable trash type
  */
 function buildMessage(result) {
   let l1 = `今日は第${result.nth}${result.day}です。\n`;
