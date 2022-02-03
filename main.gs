@@ -43,9 +43,9 @@ function gohoubi() {
     if (!ids.includes(rand)) {
       pictures.getRange(r + 1, 2).setValue(rand);
       pictures.getRange(r + 1, 1).setValue(new Date());
+      pushPicture(list[rand]);
       break;
     }
-    pushPicture(list[rand]);
   }
 }
 
